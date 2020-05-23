@@ -23,6 +23,9 @@ io.on('connection',(socket)=>{
        //console.log(userData);
        users.push(userData);
        // console.log(users);
+
+        //Bir kullanıcı gridiğinde diğer kullanıcıları bilgilendirme
+        socket.broadcast.emit('newUser',userData);
     });
 });
 

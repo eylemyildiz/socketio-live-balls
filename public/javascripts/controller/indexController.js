@@ -1,13 +1,7 @@
 app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)=>{
 
     //angular da bir array'i html dosyasında nasıl listelenir
-    $scope.messages = [{
-        text: 'selam',
-
-    },{
-        text: 'merhaba',
-
-    }];
+    $scope.messages = [];
 
 
     $scope.init = () =>{
@@ -28,7 +22,17 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
         indexFactory.connectSocket('http://localhost:3000',connectionOptions)
             .then((socket)=>{
                 //console.log('bağlantı gerçekleşti',socket);
-                socket.emit('newUser', {username})
+                socket.emit('newUser', {username});
+
+                socket.on('newUser', (data) =>{
+                    //console.log(data);
+                    const messageData = {
+                        type : 0, //info -> sunucu tarafından gönderilen mesaj gibi düşünelim dedik.Eylem giriş yaptı gibi.
+                        username: data.username
+                    };
+                    $scope.messages.push(messageData);
+                    $scope.$apply();
+                });
             }).catch((err) => {
             console.log(err);
         });
