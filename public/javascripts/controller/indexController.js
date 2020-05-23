@@ -40,6 +40,7 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
                         username: data.username
                     };
                     $scope.messages.push(messageData);
+                    $scope.players[data.id]=data;
                     $scope.$apply();
                 });
 
@@ -53,7 +54,15 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
                         username: data.username
                     };
                     $scope.messages.push(messageData);
+                    delete $scope.players[data.id];
                     $scope.$apply();
+                });
+
+                socket.on('animate', (data) =>{
+                    //console.log(data);
+                    $('#' + data.socketId).animate({'left': data.x, 'top': data.y}, () => {
+                        animate = false;
+                    });
                 });
 
                 let animate = false;
@@ -61,8 +70,13 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
                     //console.log($event.offsetX, $event.offsetY);
                     if(!animate) //Eger devam eden bir animasyon yoksa şu animasyonu çalıştır diyoruz.
                     {
+                        let x = $event.offsetX;
+                        let y = $event.offsetY;
+
+                        socket.emit('animate',{x,y});
+
                         animate = true; //animasyon devam ederken true bittiğinde de false olacak
-                        $('#' + socket.id).animate({'left': $event.offsetX, 'top': $event.offsetY}, () => {
+                        $('#' + socket.id).animate({'left': x, 'top': y}, () => {
                             animate = false;
                         });
                     }
