@@ -1,5 +1,15 @@
 app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)=>{
 
+    //angular da bir array'i html dosyasında nasıl listelenir
+    $scope.messages = [{
+        text: 'selam',
+
+    },{
+        text: 'merhaba',
+
+    }];
+
+
     $scope.init = () =>{
       const username= prompt('Please enter username');
 
