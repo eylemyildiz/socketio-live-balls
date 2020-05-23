@@ -4,7 +4,7 @@ const io = socketio();
 const socketApi={};
 socketApi.io = io;
 
-const users = []; //her gelen user'ın bilgilerini tutacak
+const users = {}; //her gelen user'ın bilgilerini tutacak
 
 io.on('connection',(socket)=>{
     console.log('a user connected');
@@ -21,11 +21,18 @@ io.on('connection',(socket)=>{
 
        const userData = Object.assign(data, defaultData);
        //console.log(userData);
-       users.push(userData);
-       // console.log(users);
-
+       //users.push(userData);
+        users[socket.id] = userData;
+        console.log(users);
         //Bir kullanıcı gridiğinde diğer kullanıcıları bilgilendirme
-        socket.broadcast.emit('newUser',userData);
+        socket.broadcast.emit('newUser',users[socket.id]);
+    });
+
+    socket.on('disconnect',()=>{
+        socket.broadcast.emit('disUser',users[socket.id]);
+        delete users[socket.id];
+
+        console.log(users);
     });
 });
 

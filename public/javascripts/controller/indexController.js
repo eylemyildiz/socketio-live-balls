@@ -27,7 +27,23 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
                 socket.on('newUser', (data) =>{
                     //console.log(data);
                     const messageData = {
-                        type : 0, //info -> sunucu tarafından gönderilen mesaj gibi düşünelim dedik.Eylem giriş yaptı gibi.
+                        type : {
+                           code: 0, //info -> sunucu tarafından gönderilen mesaj gibi düşünelim dedik.Eylem giriş yaptı gibi.
+                           message: 1 //login oldugu anlamina gelsin diye set ettik
+                        },
+                        username: data.username
+                    };
+                    $scope.messages.push(messageData);
+                    $scope.$apply();
+                });
+
+                socket.on('disUser', (data) =>{
+                   console.log(data);
+                    const messageData = {
+                        type : {
+                            code: 0, //info -> sunucu tarafından gönderilen mesaj gibi düşünelim dedik
+                            message: 0 //logout oldugu anlamina gelsin diye set ettik
+                        },
                         username: data.username
                     };
                     $scope.messages.push(messageData);
