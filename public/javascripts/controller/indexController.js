@@ -55,6 +55,18 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
                     $scope.messages.push(messageData);
                     $scope.$apply();
                 });
+
+                let animate = false;
+                $scope.onClickPlayer = ($event) =>{
+                    //console.log($event.offsetX, $event.offsetY);
+                    if(!animate) //Eger devam eden bir animasyon yoksa şu animasyonu çalıştır diyoruz.
+                    {
+                        animate = true; //animasyon devam ederken true bittiğinde de false olacak
+                        $('#' + socket.id).animate({'left': $event.offsetX, 'top': $event.offsetY}, () => {
+                            animate = false;
+                        });
+                    }
+                };
             }).catch((err) => {
             console.log(err);
         });
