@@ -2,7 +2,7 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
 
     //angular da bir array'i html dosyasında nasıl listelenir
     $scope.messages = [];
-
+    $scope.players = {};
 
     $scope.init = () =>{
       const username= prompt('Please enter username');
@@ -23,6 +23,12 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
             .then((socket)=>{
                 //console.log('bağlantı gerçekleşti',socket);
                 socket.emit('newUser', {username});
+
+                socket.on('initPlayers',(players)=>{
+                    $scope.players = players;
+                    $scope.$apply(); //ön tarafa yansıması için apply işlemini yapıyoruz.
+                    //console.log($scope.players);
+                });
 
                 socket.on('newUser', (data) =>{
                     //console.log(data);
