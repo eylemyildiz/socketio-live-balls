@@ -81,6 +81,24 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
                         });
                     }
                 };
+
+                $scope.newMessage= () =>{
+                  let message = $scope.message;
+                  console.log(message);
+
+                    const messageData = {
+                        type : {
+                            code: 1 //info -> kullanıcı tarafından gelecek mesaj için kullanılıyor.Kullanıcı tarafı olduğu için1 .
+                           },
+                        username: username,
+                        text: message
+                    };
+                    $scope.messages.push(messageData);
+                    console.log(messageData.type);
+                    $scope.message = '';
+
+                };
+
             }).catch((err) => {
             console.log(err);
         });
