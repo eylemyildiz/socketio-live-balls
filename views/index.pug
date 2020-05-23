@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  div(ng-controller="indexController") //- indexController sadece bu div'in altındaki elemanlardan sorumlu burada çalışıcak diyoruz.
+  div(ng-controller="indexController",ng-init="init()") //- indexController sadece bu div'in altındaki elemanlardan sorumlu burada çalışıcak diyoruz.
       .ui.one.column.stackable.center.aligned.page.grid.margin-30
       .column.twelve.wide
         .ui.stacked.segment.gameArea
