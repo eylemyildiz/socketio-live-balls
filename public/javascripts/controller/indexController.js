@@ -1,4 +1,4 @@
-app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)=>{
+app.controller('indexController',['$scope','indexFactory','configFactory',($scope, indexFactory,configFactory)=>{
 
     //angular da bir array'i html dosyasında nasıl listelenir
     $scope.messages = [];
@@ -37,7 +37,9 @@ app.controller('indexController',['$scope','indexFactory',($scope, indexFactory)
         };
 
         try {
-            const socket = await indexFactory.connectSocket('http://localhost:3000', connectionOptions);
+           const socketUrl =  await configFactory.getConfig();
+           console.log(socketUrl.data.socketUrl);
+            const socket = await indexFactory.connectSocket(socketUrl.data.socketUrl, connectionOptions);
             //console.log('bağlantı gerçekleşti',socket);
             socket.emit('newUser', {username});
 
